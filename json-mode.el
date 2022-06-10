@@ -140,7 +140,7 @@ STATE is a `parse-partial-sexp' state, and the returned function is the
 json font lock syntactic face function."
   (cond
    ((nth 3 state)
-      ;; This might be a string or a name
+    ;; This might be a string or a name
     (let ((startpos (nth 8 state)))
       (save-excursion
         (goto-char startpos)
@@ -179,18 +179,20 @@ json font lock syntactic face function."
 (defun json-mode-kill-path ()
   "Save JSON path to object at point to kill ring."
   (interactive)
-    (kill-new (jsons-print-path)))
+  (kill-new (jsons-print-path)))
 
 (define-key json-mode-map (kbd "C-c P") 'json-mode-kill-path)
 
 ;;;###autoload
-(defun json-mode-beautify (begin end)
-  "Beautify / pretty-print the active region (or the entire buffer if no active region)."
-  (interactive "r")
+(defun json-mode-beautify (begin end &optional minimize)
+  "Beautify / pretty-print the active region (or the entire buffer if no active region).
+
+With prefix argument MINIMIZE, minimize it instead."
+  (interactive "r\nP")
   (unless (use-region-p)
     (setq begin (point-min)
           end (point-max)))
-  (json-pretty-print begin end))
+  (json-pretty-print begin end minimize))
 
 (define-key json-mode-map (kbd "C-c C-f") 'json-mode-beautify)
 
